@@ -1,12 +1,9 @@
-
 const dbConnection = require('../dbConnection'),
       bcrypt = require('bcryptjs'),
       uuid = require('uuid'),
       { sendActivationMail } = require('./mail-service'),
-      { generateTokens, saveToken} = require('./token-service'),
-      UserDto = require('../DTO/user-dto'),
-      ApiError = require('../Middleware/Exceptions/Api-error'),
-      chalk = require('chalk')
+      { generateTokens, saveToken, removeToken, refreshTokenValidator, findToken} = require('./token-service'),
+      ApiError = require('../Middleware/Exceptions/Api-error');
 
 //SEARCHING FOR A USER
 const findUserByEmail = async(email) => {
@@ -33,8 +30,12 @@ const userRegistration = async(email, password) => {
          )}
 
       user = await findUserByEmail(email);
-      console.log(chalk.bgRed('sendActivationMail disabled'));
-      // await sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
+      try {
+         await sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
+      } catch (error) {
+         console.log(error)
+      }
+      
       const tokens = generateTokens({...user[0]});    
       await saveToken(user[0].id, tokens.refreshToken);
       return {
@@ -42,6 +43,7 @@ const userRegistration = async(email, password) => {
          user: user[0]
       }
 }
+//ACTIVATE AN ACCOUNT
 const userLinkActivation = async(activationLink) => {
    const user = await findUserByActiveLink(activationLink);
    if(!user.length) throw ApiError.BadRequest ('invalid activation link');
@@ -50,8 +52,56 @@ const userLinkActivation = async(activationLink) => {
                .update({isactivated: true})
 }
 
+//USER LOGIN
+const userLogin = async(email, password) => {
+   const user = await findUserByEmail(email);
+
+   if(!user.length) throw ApiError.BadRequest('User not found');
+
+   const isPassCompare = await bcrypt.compare(password, user[0].password);
+
+   if(!isPassCompare) throw ApiError.BadRequest('Invalid credentials');
+
+   const tokens = generateTokens({...user[0]});    
+      await saveToken(user[0].id, tokens.refreshToken);
+      return {
+         ...tokens,
+         user: user[0]
+      }
+
+}
+
+//USER LOGOUT
+const userLogout = async(refreshToken) => {
+   return await removeToken(refreshToken);
+}
+
+//USER UPDATE TOKEN
+const userRefreshToken = async(refreshToken) => {
+   
+   if(!refreshToken) throw ApiError.UnauthorizedError();
+   const dataUser = refreshTokenValidator(refreshToken);
+   const tokenDB = findToken(refreshToken);
+
+   if(!dataUser || !tokenDB) throw ApiError.UnauthorizedError();
+
+   const user = await findUserByEmail(dataUser.email);
+   const tokens = generateTokens({...user[0]});    
+   await saveToken(user[0].id, tokens.refreshToken);
+   return {
+      ...tokens,
+      user: user[0]
+   }
+}
+const findAllUsers = () => {
+   return 'OK200'
+}
 module.exports = {
-   findUser: findUserByEmail,
+   findUserByEmail,
    userRegistration,
-   userLinkActivation
+   userLinkActivation,
+   userLogin,
+   userLogout,
+   userRefreshToken,
+   findAllUsers
 }

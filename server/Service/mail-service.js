@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const transport = nodemailer.createTransport({
    host: process.env.SMTP_HOST,
-   port: process.env.SMTP_POSRT,
+   port: process.env.SMTP_PORT,
    secure: false,
    auth: {
       user: process.env.SMTP_USER,
@@ -15,7 +15,7 @@ const sendActivationMail = async (to, link) => {
       to,
       subject: 'Account activation',
       text: '',
-      html: `<div><h1>For activation</h1><a href="${link}></a></div>`
+      html: `<div><a href="${link}">Click to activate</a></div>`
    })
 }
 

@@ -1,3 +1,4 @@
+
 const ApiError = require('../Middleware/Exceptions/Api-error')
 
 module.exports = (error, req, res, next) => {
@@ -9,5 +10,6 @@ module.exports = (error, req, res, next) => {
                errors: error.errors
             })
    }
-   return res.status(500).json({message: 'Something went wrong'})
+   console.log(error);
+   return res.status(500).json({message: 'Something went wrong', error: error})
 }
