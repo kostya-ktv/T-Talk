@@ -1,11 +1,10 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import AuthPage from './pages/AuthPage/auth-page';
 
-function App() {
+const App:React.FC = () => {
   return (
-    <div className="App">
-      
+    <div className="wrapper">
+      <AuthPage/>
     </div>
   );
 }
