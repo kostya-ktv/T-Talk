@@ -1,10 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
+//@ts-ignore
+import LoginForm from "../../components/LoginForm/loginForm";
+
 import '../AuthPage/auth-styles.scss'
 
-const AuthPage:React.FC = () => {
+const AuthPage:FC = () => {
    return(
       <div>
-         <button>Hello</button>
+        <LoginForm/>
       </div>
    )
 }
