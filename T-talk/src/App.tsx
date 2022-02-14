@@ -1,12 +1,10 @@
 import React from 'react';
-import AuthPage from './pages/AuthPage/auth-page';
+import RouterApp from './router/RouterApp';
 
-const App:React.FC = () => {
+const App: React.FC = () => {
   return (
-    <div className="wrapper">
-      <AuthPage/>
-    </div>
+      <RouterApp/>
   );
-}
+};
 
 export default App;

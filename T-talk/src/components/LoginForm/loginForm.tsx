@@ -1,68 +1,80 @@
-import { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { checkAuth, login_action, logout_action, registation_action } from "../../store/actions/auth-actions";
-import { CHECK_AUTH, LOGIN_ACTION, LOGOUT_ACTION, REGISTRATION_ACTION } from "../../constants";
-import { AUTH_STATE_TYPE } from "../../store/types";
+import { Button, TextField } from '@mui/material';
+import React from 'react';
+import { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  login_action,
+  registation_action,
+} from '../../store/actions/auth-actions';
+import {
+  LOGIN_ACTION,
+  REGISTRATION_ACTION,
+} from '../../store/constants';
+import { AuthStateType } from '../../store/types';
+import '../LoginForm/loginForm.scss';
 
-const LoginForm: FC = () => {
-   const [email, setEmail] = useState<string>('')
-   const [password, setPassword] = useState<string>('')
-   const dispatch = useDispatch<any>()
-   const state:AUTH_STATE_TYPE | any = useSelector(state => state);
-   useEffect( () => {
-      if(localStorage.getItem('token')){
-         checkAuth().then(data => {
-            dispatch({
-               type: CHECK_AUTH,
-               payload: data?.data.user
-            })
-            console.log(data?.data.user);
-            
-         })
-         
-      }
-      
-   }, [])
-   console.log(state);
-   if(state.auth.isAuth){
-      return(
-         <div>
-            USER AUTHORIZED - {state.auth.user.email}
-            <button onClick={() => {
-            logout_action().then(data => {
-               dispatch({type: LOGOUT_ACTION})
-               })        
-            }}>Logout</button>
-         </div>
-      )
-   }
-   return(
-      <div>
-         <input 
-         onChange={e => setEmail(e.target.value)}
-         value={email}
-         type='text'
-         placeholder='Email'
-         />
-         <input 
-         onChange={e => setPassword(e.target.value)}
-         value={password}
-         type='password'
-         placeholder='Password'
-         />
-         <button onClick={() => {
-            login_action(email, password).then(data => {
-               dispatch({type: LOGIN_ACTION, payload: data?.data.user})
-               })        
-            }}>Login</button>
-         <button onClick={() => {
-            registation_action(email, password).then(data => {
-               dispatch({type: REGISTRATION_ACTION, payload: data?.data.user})
-            })
-         }}>Registration</button>
-         
-      </div>
-   )
+interface Props {
+  action: string;
 }
+const LoginForm: FC<Props> = ({ action }) => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const dispatch = useDispatch<any>();
+  const loginUser = () => {
+    login_action(email, password)
+      .then((data) => {
+         dispatch({ type: LOGIN_ACTION, payload: data?.data.user });
+       })
+   
+  }
+  const registerUser = () => {
+   registation_action(email, password).then((data) => {
+     dispatch({ type: REGISTRATION_ACTION, payload: data?.data.user });
+   });
+ }
 
-export default LoginForm;
+  return (
+    <div className='box'>
+
+      <TextField
+        id='standard-basic'
+        label='Email'
+        variant='standard'
+        onChange={(e) => setEmail(e.target.value)}
+        value={email}
+        type='text'
+        placeholder='Email'
+      />
+      <TextField
+        id='standard-basic'
+        label='Password'
+        variant='standard'
+        onChange={(e) => setPassword(e.target.value)}
+        value={password}
+        type='password'
+        placeholder='Password'
+      />
+
+      {
+         action === 'Login' ? (
+         <Button 
+            className='login' 
+            variant='contained' 
+            onClick={loginUser}>
+            Login
+         </Button>
+         ) : (
+         <Button
+            variant='contained'
+            onClick={registerUser}
+            className='register'
+         >
+            Registration
+         </Button>
+         )
+      }
+    </div>
+  );
+};
+
+export default React.memo(LoginForm);

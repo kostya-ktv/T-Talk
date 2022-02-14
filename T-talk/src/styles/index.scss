@@ -1,1 +1,23 @@
-
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --blue-sapphire: #05668dff;
+  --steel-blue: #427aa1ff;
+  --light-blue: rgb(90, 171, 196);
+  --alice-blue: #ebf2faff;
+  --maximum-green: #679436ff;
+  --acid-green: rgb(232, 245, 148);
+}
+html {
+  background-color: var(--blue-sapphire);
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
