@@ -5,23 +5,26 @@ import Modal from '@mui/material/Modal';
 import { ReactElement } from 'react';
 import { Card } from '@mui/material';
 import './popup.scss'
+
 interface Props{ 
    data: ReactElement
    action: string
+   isDisable: boolean
 }
-const Popup:React.FC<Props> = ({data, action}) => {
+const Popup:React.FC<Props> = ({data, action, isDisable}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <Card className='box'>
-      <Button onClick={handleOpen}>{action}</Button>
+      <Button onClick={handleOpen} disabled={isDisable}>{action}</Button>
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        
       >
         <Box sx={style}>
            {data}
@@ -37,8 +40,8 @@ const style = {
    transform: 'translate(-50%, -50%)',
    width: 'auto',
    bgcolor: 'background.paper',
-   height: '200px',
+   height: 'auto',
    boxShadow: 24,
-   p: 4,
+   p: 2,
  };
  export default Popup;

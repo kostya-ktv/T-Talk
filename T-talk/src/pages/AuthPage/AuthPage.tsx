@@ -9,9 +9,9 @@ import '../AuthPage/auth.scss'
 
 const AuthPage:FC = () => {
    return(
-      <Card className="box">      
-            <Popup data={<LoginForm action='Login'/>} action='Login'/>     
-            <Popup data={<LoginForm action='Registration'/>} action='Registration'/>     
+      <Card className="popup-wrap">  
+            <Popup data={<LoginForm action='Login'/>} action='Login' isDisable={false}/>     
+            <Popup data={<LoginForm action='Registration'/>} action='Registration' isDisable={false}/>     
       </Card>
    )
 }

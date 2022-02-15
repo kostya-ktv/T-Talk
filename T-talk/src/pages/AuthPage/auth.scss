@@ -1,6 +1,8 @@
-.box {
+.popup-wrap {
   display: flex;
-  height: 100px;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: auto;
   min-width: 350px;
   width: 30vw;
 }

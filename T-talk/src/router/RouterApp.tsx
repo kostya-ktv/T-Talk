@@ -5,27 +5,60 @@ import AuthPage from '../pages/AuthPage/AuthPage';
 import RoomPage from '../pages/RoomPage/RoomPage';
 import { checkAuth } from '../store/actions/auth-actions';
 import { CHECK_AUTH_ACTION } from '../store/constants';
+import { ToastContainer, toast } from 'react-toastify';
 
+import { removeAlert } from '../store/actions/alerts-actions';
 const RouterApp: React.FC = () => {
+
   const dispatch = useDispatch<any>();
-  const isAuth = useSelector((state:any) => state.auth.isAuth);
+
+  const isAuth = useSelector((state: any) => state.auth.isAuth);
+  const alertMessage = useSelector((state: any) => state.alerts);
 
   const checkUserAuth = () => {
-    checkAuth().then((data) => {
-      dispatch({
-        type: CHECK_AUTH_ACTION,
-        payload: data?.data.user,
-      });
-    });
-  };
+    checkAuth()
+      .then((data) => {
+        if(data !== undefined) dispatch({
+          type: CHECK_AUTH_ACTION,
+          payload: data?.data.user,
+        })
+      })
+  }
   //when opening the app, checking the token in storage
   useEffect(() => {
     if (localStorage.getItem('token')) checkUserAuth();
   }, []);
 
-  if(!isAuth){
+//show alert message
+  if (alertMessage.message.length) {
+    toast(alertMessage.message, {
+      position: "top-center",
+      type: alertMessage.status,
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      });
+ //removing alert from store after the showing
+    dispatch(removeAlert());
+  }
+
+  if (!isAuth) {
     return (
       <div>
+        <ToastContainer
+          position='top-center'
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+      />
         <Routes>
           <Route path='/' element={<AuthPage />}>
             <Route index element={<AuthPage />} />
@@ -34,16 +67,28 @@ const RouterApp: React.FC = () => {
         </Routes>
       </div>
     );
-  } 
+  }
   return (
-        <Routes>
-          <Route path='/' element={<RoomPage />}>
-            <Route index element={<RoomPage />} />
-            <Route path='*' element={<RoomPage />} />
-          </Route>
-        </Routes>
-  )
-  
+    <div>
+      <ToastContainer
+        position='top-center'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+      />
+      <Routes>
+        <Route path='/' element={<RoomPage />}>
+          <Route index element={<RoomPage />} />
+          <Route path='*' element={<RoomPage />} />
+        </Route>
+      </Routes>
+    </div>
+  );
 };
 
 export default RouterApp;

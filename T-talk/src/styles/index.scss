@@ -1,10 +1,16 @@
+@font-face {
+  font-family: Secular;
+  src: url('../Assets/SecularOne-Regular.ttf');
+}
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Secular !important;
 }
+
 :root {
-  --blue-sapphire: #05668dff;
+  --blue-sapphire: rgb(192, 215, 241);
   --steel-blue: #427aa1ff;
   --light-blue: rgb(90, 171, 196);
   --alice-blue: #ebf2faff;
@@ -13,6 +19,7 @@
 }
 html {
   background-color: var(--blue-sapphire);
+  font-size: 17px;
 }
 body {
   width: 100vw;

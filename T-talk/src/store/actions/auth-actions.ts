@@ -1,15 +1,16 @@
 import axios from "axios";
-
 import { AuthResponse } from "../../api/Model";
 import { API_URL } from "../constants";
 import { login, logout, registation } from "../../service/AuthService"
 
 export const login_action = async(email: string, password: string) => {
+
    try {
       const response = await login(email, password);
       localStorage.setItem('token', response.data.accessToken);
       return response;
    } catch (error) {
+      localStorage.removeItem('token');
       console.log(error);    
    }
 }
@@ -37,6 +38,7 @@ export const checkAuth = async () => {
       localStorage.setItem('token', response.data.accessToken);
       return response;
    } catch (error) {
+      localStorage.removeItem('token');
       console.log(error);  
    }
    

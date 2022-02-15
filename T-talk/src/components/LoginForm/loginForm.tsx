@@ -2,6 +2,7 @@ import { Button, TextField } from '@mui/material';
 import React from 'react';
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { sendSuccessAlert } from '../../store/actions/alerts-actions';
 import {
   login_action,
   registation_action,
@@ -20,22 +21,34 @@ const LoginForm: FC<Props> = ({ action }) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const dispatch = useDispatch<any>();
-  const loginUser = () => {
-    login_action(email, password)
+  
+//LOGIN
+  const loginUser = async () => {
+
+    await login_action(email, password)
       .then((data) => {
-         dispatch({ type: LOGIN_ACTION, payload: data?.data.user });
+        if(data == undefined) throw Error("")  
+         dispatch({ type: LOGIN_ACTION, payload: data?.data.user })
+         dispatch(sendSuccessAlert({status: 'success', message: 'Successful login'}))
        })
-   
+       .catch(() => dispatch(sendSuccessAlert({status: 'error', message: 'Invalid Credetials'})))
+  
   }
-  const registerUser = () => {
-   registation_action(email, password).then((data) => {
-     dispatch({ type: REGISTRATION_ACTION, payload: data?.data.user });
-   });
+//REGISTER
+  const registerUser = async () => {
+
+   await registation_action(email, password)
+    .then((data) => {
+      if(data == undefined) throw Error("")  
+     dispatch({ type: REGISTRATION_ACTION, payload: data?.data.user })
+     dispatch(sendSuccessAlert({status: 'success', message: 'Registration successful'}))
+   })
+   .catch(() => dispatch(sendSuccessAlert({status: 'error', message: 'Email already exists'})));
  }
 
   return (
     <div className='box'>
-
+      <h2>{action}</h2>
       <TextField
         id='standard-basic'
         label='Email'
@@ -44,6 +57,7 @@ const LoginForm: FC<Props> = ({ action }) => {
         value={email}
         type='text'
         placeholder='Email'
+        className='inputs'
       />
       <TextField
         id='standard-basic'
@@ -53,6 +67,7 @@ const LoginForm: FC<Props> = ({ action }) => {
         value={password}
         type='password'
         placeholder='Password'
+        className='inputs'
       />
 
       {

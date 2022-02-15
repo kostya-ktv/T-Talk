@@ -5,6 +5,7 @@ export const LOGOUT_ACTION = 'LOGOUT_ACTION'
 export const CHECK_AUTH_ACTION = 'CHECK_AUTH'
 
 //ALERTS 
-export const ERROR_ALERT_ACTION = 'ERROR_ALERT_ACTION';
+export const SUCCESS_ALERT_ACTION = 'SUCCESS_ALERT_ACTION';
+export const REMOVE_ALERT_ACTION = 'REMOVE_ALERT_ACTION';
 
 export const API_URL = `http://localhost:7000/api`

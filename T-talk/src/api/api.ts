@@ -9,16 +9,17 @@ const API = axios.create({
 })
 
 //INTERCEPTOR FOR REQUEST SET 
-API.interceptors.request.use(config => {
-   //@ts-ignore
+API.interceptors.request.use((config: any) => {
    config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
    return config;
 })
 
 //INTERCEPTOR FOR REWRITING TOKEN
+
 API.interceptors.response.use(config => {
    return config;
    //check erorrs from server repsonse
+
 }, async(error) => {
    const originalRequest = error.config;
    if(error.response.status === 401 && error.config && !error.config._isRetry) {

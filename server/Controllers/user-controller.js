@@ -55,7 +55,7 @@ const activate = async(req, res, next) => {
    try {
       const activationlink = req.params.link;
       await userLinkActivation(activationlink);
-      return res.json('profile activated')
+      return res.redirect(process.env.CLIENT_URL)
    } catch (error) {
       next(error)
    }
