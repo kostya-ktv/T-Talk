@@ -1,0 +1,22 @@
+.list-rooms {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  margin: 10px;
+  border-radius: 5px;
+}
+.list-rooms p {
+  background-color: rgb(247, 221, 243);
+  border: 1px solid rgb(201, 199, 199);
+  border-radius: 5px;
+  font-size: 0.8rem;
+  padding: 5px;
+  margin: 5px 0 5px 0;
+  display: flex;
+  justify-content: space-between;
+}
+.list-rooms p:hover {
+  background-color: rgb(232, 240, 247);
+  font-weight: bold;
+  cursor: pointer;
+}

@@ -1,39 +1,63 @@
-import { Card} from '@mui/material';
+import { Button, Card } from '@mui/material';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import ListRooms from '../../components/ListRooms/ListRooms';
+
 import Popup from '../../components/PopUp/Popup';
 import RoomWindow from '../../components/RoomWindow/RoomWindow';
 import { sendSuccessAlert } from '../../store/actions/alerts-actions';
-import './room.scss'
+import { userLogout } from '../../store/actions/auth-actions';
+import { Room } from '../../store/types';
+
+import './room.scss';
 const RoomPage: FC = () => {
   const dispatch = useDispatch();
-  const isMailActivated = useSelector((state: any) => state.auth.user.isactivated);
+  const isMailActivated = useSelector(
+    (state: any) => state.auth.user.isactivated
+  );
+  const myRooms = useSelector((state:any) => state.room)
+  console.log(myRooms);
+  
 
   useEffect(() => {
-   !isMailActivated && setTimeout(() => {
-      dispatch(sendSuccessAlert({ status: 'info', message: 'To create rooms, your mail must be verified' }));
-    }, 1000);
+    !isMailActivated &&
+      setTimeout(() => {
+        dispatch(
+          sendSuccessAlert({
+            status: 'info',
+            message: 'To create rooms, your mail must be verified',
+          })
+        );
+      }, 1000);
   }, []);
 
   return (
-     <>
-     
-  <Card className='box room-window'>
-     
-     <div className='element'>
-      <h1>#</h1>
-       <Popup data={<RoomWindow action='Create'/>} action='Create Room' isDisable={!isMailActivated}/> 
-     </div>
+    <>
+      <Card className='auth-box'>
 
-     <div className='element'>
-      <h1>#</h1>
+         <div className='auth-menu'>
+          <Popup
+            data={<RoomWindow action='Create' />}
+            action='💾 Create Room'
+            isDisable={!isMailActivated}
+          />
+        </div>
 
-        <Popup data={<RoomWindow action='Join'/>} action='Join Room' isDisable={false}/>
-     </div>
-          
+        <div className='auth-menu'>
+          <Popup
+            data={<RoomWindow action='Join' />}
+            action='🔌 Join Room'
+            isDisable={false}
+          />
+        </div>
+        <Button onClick={() => userLogout(dispatch)} className='logout'>👋 Logout</Button>
+
         
-   </Card>
-   </>
+      </Card>
+      {myRooms.length > 0 && <ListRooms data={myRooms}/>}
+         
+    
+    </>
   );
 };
 

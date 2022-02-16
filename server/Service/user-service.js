@@ -93,15 +93,12 @@ const userRefreshToken = async(refreshToken) => {
       user: user[0]
    }
 }
-const findAllUsers = () => {
-   return 'OK200'
-}
+
 module.exports = {
    findUserByEmail,
    userRegistration,
    userLinkActivation,
    userLogin,
    userLogout,
-   userRefreshToken,
-   findAllUsers
+   userRefreshToken
 }

@@ -1,7 +1,9 @@
 import axios from "axios";
-import { AuthResponse } from "../../api/Model";
-import { API_URL } from "../constants";
+
+import { API_URL, LOGOUT_ACTION } from "../constants";
 import { login, logout, registation } from "../../service/AuthService"
+import { AuthResponse } from "../types";
+import { Dispatch } from "redux";
 
 export const login_action = async(email: string, password: string) => {
 
@@ -23,7 +25,11 @@ export const registation_action = async(email: string, password: string) => {
       console.log(error);    
    }
 }
-export const logout_action = async() => {
+export const userLogout = (dispatch: Dispatch) => {
+   logout_action().then((data) => dispatch({ type: LOGOUT_ACTION }))
+ };
+
+const logout_action = async() => {
    try {
       const response = await logout();
       localStorage.removeItem('token');

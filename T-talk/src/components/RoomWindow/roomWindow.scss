@@ -1,12 +1,27 @@
-.wrap {
-  height: 300px;
+.box {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
 }
-.wrap h3 {
-  text-align: center;
-}
+
 .inputs {
-  padding: 5px;
-  margin: 5px;
+  width: 90vw;
+  max-width: 400px;
+}
+.join {
+  background-color: #a5cdd4 !important;
+  color: black !important;
+}
+.join:hover {
+  background-color: rgb(111, 179, 185) !important;
+  color: black !important;
+  font-weight: bold !important;
+}
+.create {
+  background-color: #95ca98 !important;
+  color: black !important;
+}
+.create:hover {
+  background-color: rgb(102, 153, 102) !important;
+  color: black !important;
+  font-weight: bold !important;
 }

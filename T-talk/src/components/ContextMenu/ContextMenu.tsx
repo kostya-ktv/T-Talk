@@ -2,12 +2,13 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { logout_action } from '../../store/actions/auth-actions';
-import { LOGOUT_ACTION } from '../../store/constants';
+import { userLogout } from '../../store/actions/auth-actions';
 import { useDispatch } from 'react-redux';
+//props
 interface Props {
    children: React.ReactElement
 }
+
 const ContextMenu:React.FC<Props> = ({children}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -21,11 +22,6 @@ const ContextMenu:React.FC<Props> = ({children}) => {
   const handleClose = () => {
    setAnchorEl(null);
  };
-
-  const userLogout = () => {
-
-    logout_action().then((data) => dispatch({ type: LOGOUT_ACTION }))
-  };
 
   return (
     <div>
@@ -49,8 +45,8 @@ const ContextMenu:React.FC<Props> = ({children}) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={userLogout}>Change Room</MenuItem>
-        <MenuItem onClick={userLogout}>Logout</MenuItem>
+        <MenuItem onClick={() => userLogout(dispatch)}>Logout</MenuItem>
+ 
       </Menu>
     </div>
   );

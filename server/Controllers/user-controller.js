@@ -1,6 +1,7 @@
-const {userRegistration, userLinkActivation, userLogin, userLogout,findAllUsers, userRefreshToken} = require('../Service/user-service')
+const {userRegistration, userLinkActivation, userLogin, userLogout, userRefreshToken} = require('../Service/user-service')
 const {validationResult} = require('express-validator');
 const ApiError = require('../Middleware/Exceptions/Api-error');
+
 
 //User registration cotroller
 const registration = async (req, res, next) => {    
@@ -76,16 +77,12 @@ const refresh = async(req, res, next) => {
    }
 }
 
-const getUsers = (req, res, next) => {
 
-   res.json(findAllUsers())
-}
 
 module.exports = {
    registration,
    login,
    logout,
    activate,
-   refresh,
-   getUsers
+   refresh
 }

@@ -18,7 +18,7 @@ const Popup:React.FC<Props> = ({data, action, isDisable}) => {
 
   return (
     <Card className='box'>
-      <Button onClick={handleOpen} disabled={isDisable}>{action}</Button>
+      <Button variant="outlined" onClick={handleOpen} disabled={isDisable} className="btn">{action}</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -26,6 +26,7 @@ const Popup:React.FC<Props> = ({data, action, isDisable}) => {
         aria-describedby="modal-modal-description"
         
       >
+        {/* Inputs box */}
         <Box sx={style}>
            {data}
         </Box>
@@ -39,9 +40,9 @@ const style = {
    left: '50%',
    transform: 'translate(-50%, -50%)',
    width: 'auto',
-   bgcolor: 'background.paper',
+   bgcolor: 'rgba(255, 255, 255, 0.9)',
    height: 'auto',
    boxShadow: 24,
-   p: 2,
+   p: 3,
  };
  export default Popup;

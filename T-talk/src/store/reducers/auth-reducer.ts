@@ -1,6 +1,6 @@
-import { IUser } from "../../api/Model"
+
 import { CHECK_AUTH_ACTION, LOGIN_ACTION, LOGOUT_ACTION, REGISTRATION_ACTION } from "../constants"
-import { AuthActionType } from "../types"
+import { AuthActionType, IUser } from "../types"
 
 const AUTH_STATE = {
    user: {} as IUser,

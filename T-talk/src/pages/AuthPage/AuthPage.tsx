@@ -1,18 +1,36 @@
+import { Button, Card } from '@mui/material';
+import { FC } from 'react';
 
-import { Card } from "@mui/material";
-import { FC } from "react";
+import LoginForm from '../../components/LoginForm/LoginForm';
+import Popup from '../../components/PopUp/Popup';
+import logo from '../../Assets/T-talk.svg'
 
-import LoginForm from "../../components/LoginForm/LoginForm";
-import Popup from "../../components/PopUp/Popup";
-
-import '../AuthPage/auth.scss'
-
-const AuthPage:FC = () => {
-   return(
-      <Card className="popup-wrap">  
-            <Popup data={<LoginForm action='Login'/>} action='Login' isDisable={false}/>     
-            <Popup data={<LoginForm action='Registration'/>} action='Registration' isDisable={false}/>     
-      </Card>
-   )
-}
+const AuthPage: FC = () => {
+  return (
+     <>
+    <Card className='auth-box'>
+      <div style={{textAlign: 'center'}}>
+      <img src={logo} style={{height: 70, width: 200}}/>
+      </div>
+      <div className='auth-menu'>
+        <Popup
+          data={<LoginForm action='Login' />}
+          action='🔑 Login'
+          isDisable={false}
+        />
+      </div>
+      
+      <div className='auth-menu'>
+        <Popup
+          data={<LoginForm action='Registration' />}
+          action='📀 Registration'
+          isDisable={false}
+        />
+      </div>
+      
+    </Card>
+    <Button className='logout'>Copyright © Kostya Kotov 2022.</Button>
+    </>
+  );
+};
 export default AuthPage;

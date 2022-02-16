@@ -8,31 +8,31 @@ import { CHECK_AUTH_ACTION } from '../store/constants';
 import { ToastContainer, toast } from 'react-toastify';
 
 import { removeAlert } from '../store/actions/alerts-actions';
+import ChatPage from '../pages/ChatPage/ChatPage';
 const RouterApp: React.FC = () => {
-
   const dispatch = useDispatch<any>();
 
   const isAuth = useSelector((state: any) => state.auth.isAuth);
   const alertMessage = useSelector((state: any) => state.alerts);
 
   const checkUserAuth = () => {
-    checkAuth()
-      .then((data) => {
-        if(data !== undefined) dispatch({
+    checkAuth().then((data) => {
+      if (data !== undefined)
+        dispatch({
           type: CHECK_AUTH_ACTION,
           payload: data?.data.user,
-        })
-      })
-  }
+        });
+    });
+  };
   //when opening the app, checking the token in storage
   useEffect(() => {
     if (localStorage.getItem('token')) checkUserAuth();
   }, []);
 
-//show alert message
+  //show alert message
   if (alertMessage.message.length) {
     toast(alertMessage.message, {
-      position: "top-center",
+      position: 'top-center',
       type: alertMessage.status,
       autoClose: 5000,
       hideProgressBar: false,
@@ -40,8 +40,8 @@ const RouterApp: React.FC = () => {
       pauseOnHover: false,
       draggable: true,
       progress: undefined,
-      });
- //removing alert from store after the showing
+    });
+    //removing alert from store after the showing
     dispatch(removeAlert());
   }
 
@@ -58,7 +58,7 @@ const RouterApp: React.FC = () => {
           pauseOnFocusLoss
           draggable
           pauseOnHover={false}
-      />
+        />
         <Routes>
           <Route path='/' element={<AuthPage />}>
             <Route index element={<AuthPage />} />
@@ -82,10 +82,10 @@ const RouterApp: React.FC = () => {
         pauseOnHover={false}
       />
       <Routes>
-        <Route path='/' element={<RoomPage />}>
-          <Route index element={<RoomPage />} />
-          <Route path='*' element={<RoomPage />} />
-        </Route>
+        <Route path='/' element={<RoomPage />} />
+        <Route index element={<RoomPage />} />
+        <Route path='/chat/:id/:room/:user' element={<ChatPage />} />
+        <Route path='*' element={<RoomPage />} />
       </Routes>
     </div>
   );

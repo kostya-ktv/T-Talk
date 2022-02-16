@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import API from "../api/api";
-import { AuthResponse } from "../api/Model";
+import { AuthResponse } from "../store/types";
 
 export const login = async (email: string, password: string): Promise<AxiosResponse<AuthResponse>> => {
 

@@ -48,7 +48,7 @@ const LoginForm: FC<Props> = ({ action }) => {
 
   return (
     <div className='box'>
-      <h2>{action}</h2>
+      <h4>{action}</h4>
       <TextField
         id='standard-basic'
         label='Email'
@@ -58,6 +58,7 @@ const LoginForm: FC<Props> = ({ action }) => {
         type='text'
         placeholder='Email'
         className='inputs'
+      
       />
       <TextField
         id='standard-basic'
@@ -68,6 +69,7 @@ const LoginForm: FC<Props> = ({ action }) => {
         type='password'
         placeholder='Password'
         className='inputs'
+     
       />
 
       {

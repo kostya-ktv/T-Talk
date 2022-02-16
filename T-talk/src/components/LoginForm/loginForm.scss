@@ -4,11 +4,17 @@
 }
 .login {
   margin-top: 20px !important;
-  background-color: rgb(86, 196, 71) !important;
+  background-color: rgb(116, 177, 108) !important;
+}
+.login:hover {
+  background-color: rgb(60, 114, 53) !important;
 }
 .register {
   margin-top: 20px !important;
-  background-color: rgb(96, 141, 201) !important;
+  background-color: rgb(94, 124, 163) !important;
+}
+.register:hover {
+  background-color: rgb(61, 80, 104) !important;
 }
 .inputs {
   width: 90vw;

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_URL } from "../store/constants";
-import { AuthResponse } from "./Model";
+import { AuthResponse } from "../store/types";
+
 
 
 const API = axios.create({
