@@ -1,4 +1,4 @@
-import { REMOVE_ALERT_ACTION, SUCCESS_ALERT_ACTION } from "../constants";
+import { REMOVE_ALERT_ACTION, ALERT_ACTION } from "../constants";
 
 const ALERTS_STATE = {
    status: '',
@@ -8,7 +8,7 @@ const ALERTS_STATE = {
 const alertsReducer = (state = ALERTS_STATE, action: {type: string, payload: typeof ALERTS_STATE}) => {
 
    switch(action.type){
-      case SUCCESS_ALERT_ACTION: return {...state, status: action.payload.status, message: action.payload.message}
+      case ALERT_ACTION: return {...state, status: action.payload.status, message: action.payload.message}
       case REMOVE_ALERT_ACTION: return {...state, status: '', message: ''};
       
       default: return state

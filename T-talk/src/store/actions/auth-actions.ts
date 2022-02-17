@@ -25,20 +25,18 @@ export const registation_action = async(email: string, password: string) => {
       console.log(error);    
    }
 }
-export const userLogout = (dispatch: Dispatch) => {
-   logout_action().then((data) => dispatch({ type: LOGOUT_ACTION }))
- };
+//USER LOGOUT
 
-const logout_action = async() => {
+export const userLogout_action = async(dispatch: Dispatch) => {
    try {
-      const response = await logout();
+      await logout().then(() => dispatch({ type: LOGOUT_ACTION }))
       localStorage.removeItem('token');
-      return response;
    } catch (error) {
       console.log(error);    
    }
 }
-export const checkAuth = async () => {
+//CHECKING USER AUTH WITH STARTING APP
+export const checkAuth_action = async () => {
    try {
       const response = await axios.get<AuthResponse>(`${API_URL}/refresh`,{withCredentials: true})
       localStorage.setItem('token', response.data.accessToken);

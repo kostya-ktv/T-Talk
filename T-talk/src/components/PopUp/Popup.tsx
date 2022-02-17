@@ -9,16 +9,15 @@ import './popup.scss'
 interface Props{ 
    data: ReactElement
    action: string
-   isDisable: boolean
 }
-const Popup:React.FC<Props> = ({data, action, isDisable}) => {
+const Popup:React.FC<Props> = ({data, action}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <Card className='box'>
-      <Button variant="outlined" onClick={handleOpen} disabled={isDisable} className="btn">{action}</Button>
+      <Button variant="outlined" onClick={handleOpen} className="btn">{action}</Button>
       <Modal
         open={open}
         onClose={handleClose}

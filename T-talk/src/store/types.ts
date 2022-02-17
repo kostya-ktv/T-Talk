@@ -1,13 +1,14 @@
 import { combineReducers } from "redux"
 
+export type StoreType = {
+   auth: AuthStateType,
+   alerts: any,
+   room: Array<RoomResponseType>
+}
 export type AuthResponse = {
    accessToken: string;
    refreshToken: string;
    user: IUser;
-}
-export type RoomResponse = {
-   room: string;
-   uuidValue: string;
 }
 
 export type IUser = {
@@ -41,7 +42,11 @@ export type RoomActionType = {
    type: string,
    payload?: Object
 }
-export type Room = {
-   uuidValue: string,
-   name: string
+
+export type RoomResponseType = {
+   id: number, 
+   name: string, 
+   room_id: string,
+   iuser_id: number,
+   nickname: string
 }

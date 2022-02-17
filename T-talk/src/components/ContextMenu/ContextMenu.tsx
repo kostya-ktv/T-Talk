@@ -2,8 +2,9 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { userLogout } from '../../store/actions/auth-actions';
+import { userLogout_action } from '../../store/actions/auth-actions';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 //props
 interface Props {
    children: React.ReactElement
@@ -14,8 +15,9 @@ const ContextMenu:React.FC<Props> = ({children}) => {
   const open = Boolean(anchorEl);
   const dispatch = useDispatch<any>();
 
-  //@ts-ignore
-  const handleClick = (event) => {
+  const navigate = useNavigate(); 
+  
+  const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
 
   };
@@ -24,18 +26,16 @@ const ContextMenu:React.FC<Props> = ({children}) => {
  };
 
   return (
-    <div>
-       
+    <div>   
       <Button
         id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-      >
+        >
         {children}
-      </Button>
-    
+      </Button>  
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -44,9 +44,11 @@ const ContextMenu:React.FC<Props> = ({children}) => {
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}
-      >
-        <MenuItem onClick={() => userLogout(dispatch)}>Logout</MenuItem>
- 
+        
+        >
+
+        <MenuItem onClick={() => navigate(`/room`)}>Close Room</MenuItem>
+        <MenuItem onClick={() => userLogout_action(dispatch)}>Logout</MenuItem>
       </Menu>
     </div>
   );

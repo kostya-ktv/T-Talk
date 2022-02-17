@@ -1,21 +1,43 @@
 import { Card } from "@mui/material";
 import { FC } from "react";
-import DeleteIcon from '@mui/icons-material/Delete';
-import CableIcon from '@mui/icons-material/Cable';
 import './list-rooms.scss'
+import { IUser, RoomResponseType } from "../../store/types";
+import { deletRoom_action, getRooms_action } from "../../store/actions/room-actions";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { sendAlert } from "../../store/actions/alerts-actions";
 
 type Props = {
-   data: []
+   rooms: Array<RoomResponseType>,
+   user: IUser
 }
-const ListRooms:FC<Props> = ({data}) => {
+const ListRooms:FC<Props> = ({rooms, user}) => {
+   const navigate = useNavigate()  
+   const dispatch = useDispatch();
+
+   const handleDelete = async (roomid: string) => {  
+      await deletRoom_action(roomid).then( async() => {
+         dispatch(sendAlert({ status: 'info', message: 'Room successfully deleted' }));
+         await getRooms_action(user.id, dispatch)
+      })
+   }
+
    return(
       <Card className="list-rooms">
-         <h5>Your created rooms:</h5>
+         <h5>🔎YOUR ROOMS: {!rooms.length && <small>no room created yet</small>}</h5>
          {
-            data.map(el => 
-            <>
-               <p><DeleteIcon/># {el[1]}<CableIcon/></p>
-            </>)
+            rooms.map(el => 
+            <div key={el.room_id}>
+               <p>
+                  <span onClick={() => handleDelete(el.room_id)}>
+                  🗑 Delete
+                  </span>
+                  {el.name}
+                  <span onClick={() => navigate(`/chat/${el.room_id}`)}>
+                  🔌Join
+                  </span>
+               </p>
+            </div>)
             }
       </Card>
    )

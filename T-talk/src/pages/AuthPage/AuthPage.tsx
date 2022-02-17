@@ -16,7 +16,6 @@ const AuthPage: FC = () => {
         <Popup
           data={<LoginForm action='Login' />}
           action='🔑 Login'
-          isDisable={false}
         />
       </div>
       
@@ -24,7 +23,6 @@ const AuthPage: FC = () => {
         <Popup
           data={<LoginForm action='Registration' />}
           action='📀 Registration'
-          isDisable={false}
         />
       </div>
       

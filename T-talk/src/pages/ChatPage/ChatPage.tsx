@@ -1,17 +1,36 @@
 import { Avatar, Button, Card, CardHeader, IconButton, TextField } from '@mui/material';
 import { green } from '@mui/material/colors';
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import './chat.scss';
-
 import SendIcon from '@mui/icons-material/Send';
-
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ContextMenu from '../../components/ContextMenu/ContextMenu';
+import { io } from 'socket.io-client';
+import { useSelector } from 'react-redux';
+import { API_CHAT } from '../../store/constants';
 import { useParams } from 'react-router';
+import { StoreType } from '../../store/types';
+import { roomIsInStore } from '../../service/RoomService';
+
 
 const ChatPage: React.FC = () => {
-  const {id, room, user} = useParams();
+  let socket;
+  const myRooms = useSelector((state: StoreType) => state.room)
+  const roomID = useParams();
+  console.log(roomID);
+  
+  const { room_id, name, nickname } =  roomIsInStore(myRooms, roomID) || myRooms[myRooms.length - 1]
 
+  useEffect(() => {
+    socket = io(API_CHAT);
+    
+    socket.emit('join', { room_id, name, nickname}, (error:any) => {
+      if(error) {
+        alert(error);
+      }
+    });
+
+  },[])
 
   return (
    
@@ -19,7 +38,7 @@ const ChatPage: React.FC = () => {
   
       <CardHeader className='header-chat' avatar={
           <Avatar sx={{ bgcolor: green[300] }} aria-label='recipe'>
-            {user?.charAt(0)}
+            {nickname?.charAt(0)}
           </Avatar>
         }
         action={
@@ -29,8 +48,8 @@ const ChatPage: React.FC = () => {
             </ContextMenu>    
           </IconButton>
         }
-        title={room}
-        subheader={id}
+        title={name}
+        subheader={room_id}
       />
       <Card className='window-chat'>
 

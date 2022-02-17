@@ -2,7 +2,7 @@ const rootRouter = require('express').Router();
 const {registration, activate, login, logout, refresh} = require('../Controllers/user-controller')
 const {body} = require('express-validator')
 const authMiddleware = require('../Middleware/auth-middleware')
-const {createRoom} = require('../Controllers/room-controller')
+const {createRoom, fetchRoomsByUser, deleteRoom,getRoomByRoomId} = require('../Controllers/room-controller')
 
 //USER AUTH ROUTES
 rootRouter.post('/registration', 
@@ -16,6 +16,9 @@ rootRouter.get('/refresh', refresh);
 
 //ROOMS ROUTES
 rootRouter.post('/create-room', authMiddleware, createRoom);
+rootRouter.get('/rooms/:userid', authMiddleware, fetchRoomsByUser);
+rootRouter.get('/delete-room/:roomid', authMiddleware, deleteRoom);
+rootRouter.get('/get-room/:roomid', authMiddleware, getRoomByRoomId);
 
 
 module.exports = rootRouter;

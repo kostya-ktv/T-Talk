@@ -3,21 +3,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import AuthPage from '../pages/AuthPage/AuthPage';
 import RoomPage from '../pages/RoomPage/RoomPage';
-import { checkAuth } from '../store/actions/auth-actions';
+import { checkAuth_action } from '../store/actions/auth-actions';
 import { CHECK_AUTH_ACTION } from '../store/constants';
-import { ToastContainer, toast } from 'react-toastify';
-
 import { removeAlert } from '../store/actions/alerts-actions';
 import ChatPage from '../pages/ChatPage/ChatPage';
-const RouterApp: React.FC = () => {
-  const dispatch = useDispatch<any>();
+import { getRooms_action } from '../store/actions/room-actions';
+import Toast, { showToast } from '../components/Toast/Toast';
+import { StoreType } from '../store/types';
 
-  const isAuth = useSelector((state: any) => state.auth.isAuth);
+const RouterApp: React.FC = () => {
+
+  const dispatch = useDispatch<any>();
+  const auth = useSelector((state: StoreType) => state.auth);
   const alertMessage = useSelector((state: any) => state.alerts);
 
-  const checkUserAuth = () => {
-    checkAuth().then((data) => {
+  const checkUserAuth = async() => {
+    await checkAuth_action().then(async (data) => {
       if (data !== undefined)
+      //@ts-ignore
+      await getRooms_action(data.data.user.id,dispatch)
         dispatch({
           type: CHECK_AUTH_ACTION,
           payload: data?.data.user,
@@ -26,42 +30,26 @@ const RouterApp: React.FC = () => {
   };
   //when opening the app, checking the token in storage
   useEffect(() => {
-    if (localStorage.getItem('token')) checkUserAuth();
+    localStorage.getItem('token') && checkUserAuth();
   }, []);
 
   //show alert message
   if (alertMessage.message.length) {
-    toast(alertMessage.message, {
-      position: 'top-center',
-      type: alertMessage.status,
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-    });
+    showToast(alertMessage)
     //removing alert from store after the showing
     dispatch(removeAlert());
   }
+console.log(auth);
 
-  if (!isAuth) {
+  if (!auth.isAuth) {
     return (
       <div>
-        <ToastContainer
-          position='top-center'
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover={false}
-        />
+        <Toast/>
         <Routes>
           <Route path='/' element={<AuthPage />}>
             <Route index element={<AuthPage />} />
+            
+            <Route path='/chat/:room/:id' element={<ChatPage />} />
             <Route path='*' element={<AuthPage />} />
           </Route>
         </Routes>
@@ -70,21 +58,12 @@ const RouterApp: React.FC = () => {
   }
   return (
     <div>
-      <ToastContainer
-        position='top-center'
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover={false}
-      />
+      <Toast/>
       <Routes>
         <Route path='/' element={<RoomPage />} />
         <Route index element={<RoomPage />} />
-        <Route path='/chat/:id/:room/:user' element={<ChatPage />} />
+        <Route path='/chat/' element={<ChatPage />} />
+        <Route path='/chat/:id' element={<ChatPage />} />
         <Route path='*' element={<RoomPage />} />
       </Routes>
     </div>
