@@ -1,4 +1,5 @@
 import axios from "axios";
+import { STORAGE } from "../service/Util";
 import { API_URL } from "../store/constants";
 import { AuthResponse } from "../store/types";
 
@@ -11,7 +12,7 @@ const API = axios.create({
 
 //INTERCEPTOR FOR REQUEST SET 
 API.interceptors.request.use((config: any) => {
-   config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+   config.headers.Authorization = `Bearer ${STORAGE.getItem('token')}`;
    return config;
 })
 
@@ -27,7 +28,7 @@ API.interceptors.response.use(config => {
       originalRequest._isRetry = true;
       const response = await axios.get<AuthResponse>(`${API_URL}/refresh`,{withCredentials: true})
       //with the successful refresh response, write a new access token in LS
-      localStorage.setItem('token', response.data.accessToken);
+      STORAGE.setItem('token', response.data.accessToken);
       //repeat the main request
       return API.request(originalRequest);
    }

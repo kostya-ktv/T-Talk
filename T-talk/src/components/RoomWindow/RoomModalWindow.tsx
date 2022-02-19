@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { sendAlert } from "../../store/actions/alerts-actions";
 import { createRoom_action, getRoomByRoomID_action, getRooms_action } from "../../store/actions/room-actions";
-import { StoreType } from "../../store/types";
+import { GlobalStateType } from "../../store/types";
 import './roomModalWindow.scss'
 
 interface Props {
@@ -15,7 +15,7 @@ const RoomModalWindow:FC<Props> = ({action}) => {
       
    const navigate = useNavigate()   
    const dispatch = useDispatch()
-   const myRooms = useSelector((state: StoreType) => state.room)
+   const myRooms = useSelector((state: GlobalStateType) => state.room)
    const [room, setRoom] = useState('')
    const [nickname, setNickname] = useState('')
 //Create room handling
@@ -46,16 +46,17 @@ const RoomModalWindow:FC<Props> = ({action}) => {
       }else {
          await getRoomByRoomID_action(room)
             .then(res => {
+
                !res?.data.length 
                   ?
                      dispatch(sendAlert({status: 'error', message: `The room does not exist or has been deleted`}))
                   :
-                     navigate(`/chat/${room}/${nickname}`)
+                     navigate(`/chat/${room}/${nickname}/${res?.data[0].name}`)
             })
          }
       }
 
-      
+
    return(
          <div className="box">
             <h4>{action} Room</h4>

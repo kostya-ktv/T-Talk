@@ -9,9 +9,16 @@
 .window-chat {
   width: auto;
   background-color: rgb(239, 255, 226) !important;
-
   flex: 2;
+  padding: 1vw 2vw 0vw 2vw;
+  scroll-behavior: smooth !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
 }
+.window-chat::-webkit-scrollbar {
+  width: 0;
+}
+
 .input-chat {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   flex: 1;

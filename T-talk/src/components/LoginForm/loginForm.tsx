@@ -1,10 +1,15 @@
-import { Button, TextField } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import React from 'react';
 import { FC, useState } from 'react';
-import { useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { Dispatch } from 'redux';
+import { setStorage } from '../../service/Util';
 import { sendAlert } from '../../store/actions/alerts-actions';
-import {login_action,registation_action,} from '../../store/actions/auth-actions';
+import {
+  login_action,
+  registation_action,
+} from '../../store/actions/auth-actions';
 import { LOGIN_ACTION, REGISTRATION_ACTION } from '../../store/constants';
 import '../LoginForm/loginForm.scss';
 
@@ -15,7 +20,7 @@ const LoginForm: FC<Props> = ({ action }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch<Dispatch>();
 
   //LOGIN
   const loginUser = async () => {
@@ -24,12 +29,10 @@ const LoginForm: FC<Props> = ({ action }) => {
         if (data == undefined) throw Error('');
         dispatch({ type: LOGIN_ACTION, payload: data?.data.user });
         dispatch(sendAlert({ status: 'success', message: 'Successful login' }));
-        navigate(`/room`);
+        navigate(`/`);
       })
       .catch(() =>
-        dispatch(
-          sendAlert({ status: 'error', message: 'Invalid Credetials' })
-        )
+        dispatch(sendAlert({ status: 'error', message: 'Invalid Credetials' }))
       );
   };
 
@@ -78,12 +81,24 @@ const LoginForm: FC<Props> = ({ action }) => {
       />
 
       {action === 'Login' ? (
-        <Button className='login' variant='contained' onClick={loginUser}>
-          Login
-        </Button>
+        <>
+          <Button 
+            className='login' 
+            variant='contained' 
+            onClick={loginUser}>
+            Login
+          </Button>
+          <FormControlLabel
+            control={<Checkbox value='remember' color='success' onClick={() => setStorage(false)} />}
+            label='Remember me'
+          />
+        </>
       ) : (
-        <Button variant='contained' onClick={registerUser} className='register'>
-          Registration
+        <Button 
+          variant='contained' 
+          onClick={registerUser} 
+          className='register'>
+            Registration
         </Button>
       )}
     </div>

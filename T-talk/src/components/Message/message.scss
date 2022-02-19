@@ -1,0 +1,37 @@
+.main,
+.main-user {
+  position: relative;
+  border-radius: 14px;
+  padding: 0.5vw 2vw 0.5vw 2vw;
+  margin-bottom: 2vw;
+  min-width: 250px;
+  max-width: 60vw;
+}
+.main {
+  background-color: rgb(199, 233, 171);
+
+  align-self: flex-end;
+}
+.main-user {
+  background-color: rgb(232, 233, 231);
+
+  align-self: flex-start;
+}
+.header {
+  border-radius: 14px;
+  padding: 0 1vw 0 1vw;
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: space-between;
+}
+.time {
+  font-size: 0.6rem;
+}
+.user-name {
+  font-size: 0.8rem;
+}
+.message {
+  position: relative;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}

@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import ListRooms from '../../components/ListRooms/ListRooms';
 import Popup from '../../components/PopUp/Popup';
 import RoomPopupWindow from '../../components/RoomWindow/RoomModalWindow';
+import { STORAGE } from '../../service/Util';
 import { sendAlert } from '../../store/actions/alerts-actions';
 import { userLogout_action } from '../../store/actions/auth-actions';
 import { getRooms_action } from '../../store/actions/room-actions';
 import './room.scss';
 
 const RoomPage: FC = () => {
-
+  
   const dispatch = useDispatch();
   //SELECT USER
   const user = useSelector(
@@ -21,6 +22,7 @@ const RoomPage: FC = () => {
 
   
   useEffect( () => {
+
      //REMINDER FOR USERS WHISH EMAIL NOT ACTIVATED
     !user.isactivated &&
       setTimeout(() => {

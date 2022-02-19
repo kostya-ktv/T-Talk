@@ -1,9 +1,8 @@
 const ApiError = require('../Middleware/Exceptions/Api-error');
 const {findRoomByName_service,getRoomById_service, getRoomsByUserId_service, deleteRoomById_service} = require('../Service/room-service');
 const { findUserByEmail } = require('../Service/user-service');
-const {addRoomToDB} = require('../Service/room-service');
+const {addRoomToDB_service} = require('../Service/room-service');
 const uuid = require('uuid');
-const {chalk} = require('chalk')
 
 //CREATE ROOM
 const createRoom = async (req, res, next) => { 
@@ -15,12 +14,12 @@ const createRoom = async (req, res, next) => {
       if(roomDB.length) throw ApiError.BadRequest('room already exists');
       
       const uuidValue = uuid.v4();
-      await addRoomToDB(room, uuidValue, user[0].id, nickname); 
+      await addRoomToDB_service(room, uuidValue, user[0].id, nickname); 
       roomDB = await findRoomByName_service(room);
       return res.json({...roomDB})
 
    } catch (error) {
-      console.log(chalk.bgRed(error));
+      console.log(error);
       next(error)
    }
    

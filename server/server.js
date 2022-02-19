@@ -30,11 +30,22 @@ app.use(
 
 //SOCKET CONFIGURE
 io.on('connect', (socket) => {
+
    //LISTENERS
-   //JOIN CHAT
-  socket.on('join', ({ room_id, name, nickname}) => {
-    console.log(room_id, name, nickname);
+   //JOIN
+  socket.on('join', ({id, nickname, room, time}) => {
+    socket.join(id)
+    socket.to(id).emit('user-join', ({id, nickname, room, time}))
+
   });
+
+  socket.on('sendMessage', ({roomid, message, nickname, time}) =>{
+    io.to(roomid).emit('receiveMessage', {roomid, message, nickname, time});
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected' + new Date(Date.now()));
+	});
 
 });
 
