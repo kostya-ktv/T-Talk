@@ -26,7 +26,7 @@ const LoginForm: FC<Props> = ({ action }) => {
   const loginUser = async () => {
     await login_action(email, password)
       .then((data) => {
-        if (data == undefined) throw Error('');
+        if (data === undefined) throw Error('');
         dispatch({ type: LOGIN_ACTION, payload: data?.data.user });
         dispatch(sendAlert({ status: 'success', message: 'Successful login' }));
         navigate(`/`);
@@ -40,7 +40,7 @@ const LoginForm: FC<Props> = ({ action }) => {
   const registerUser = async () => {
     await registation_action(email, password)
       .then((data) => {
-        if (data == undefined) throw Error('');
+        if (data === undefined) throw Error('');
         dispatch({ type: REGISTRATION_ACTION, payload: data?.data.user });
         dispatch(
           sendAlert({
@@ -70,7 +70,6 @@ const LoginForm: FC<Props> = ({ action }) => {
         className='inputs'
       />
       <TextField
-        id='standard-basic'
         label='Password'
         variant='outlined'
         onChange={(e) => setPassword(e.target.value)}

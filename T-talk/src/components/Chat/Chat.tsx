@@ -4,6 +4,7 @@ import { Socket } from "socket.io-client";
 import { FC, useEffect, useState } from "react";
 import ListMessages from "../ListMessages/ListMessages";
 import { MessageType } from "../../store/types";
+import PopOver from "../PopOver/PopOver";
 
 type Props = {
    socket: Socket,
@@ -14,6 +15,7 @@ type Props = {
 
 const Chat:FC<Props> = ({socket, nickname, room, roomid}) => {
    const [currentMessage, setCurrentMessage] = useState('');
+   const [currentUsers, setCurrentUsers] = useState<Array<string>>([]);
    const [messages, setMessages] = useState<Array<MessageType>>([]);
 
    const sendMessage = () => {  
@@ -22,7 +24,7 @@ const Chat:FC<Props> = ({socket, nickname, room, roomid}) => {
             roomid: roomid,
             message: currentMessage,
             nickname: nickname,
-            time: new Date(Date.now()).toLocaleString()
+            time: new Date(Date.now()).toLocaleTimeString()
          }
           socket?.emit('sendMessage', messageData);  
           setCurrentMessage('')   
@@ -30,7 +32,7 @@ const Chat:FC<Props> = ({socket, nickname, room, roomid}) => {
    }
 //EFFECT FOR EVENT USER MESSAGE
  useEffect( ()=> {
-   socket?.on('receiveMessage', ({roomid, message, nickname, time}) => { 
+   socket?.on('receiveMessage', ({roomid, message, nickname, time, users}) => { 
   
       const msg: MessageType = {
         message: message,
@@ -39,28 +41,60 @@ const Chat:FC<Props> = ({socket, nickname, room, roomid}) => {
         type: 'user-message'
       }
       setMessages(prev => [...prev, msg])  
+      setCurrentUsers(users) 
    })
  },[socket])
 
 //EFFECT FOR EVENT JOINING CHAT
  useEffect( ()=> {
-   socket?.on('user-join', ({id, nickname, room, time}) => { 
+   socket?.on('user-join', ({id, nickname, room, time, users}) => { 
 
     const msg: MessageType = {
-      message: `🔔 ${nickname} join`,
+      message: `🔔 ${nickname} join chat`,
       sender: 'Server',
       time: time,
       type: 'notification'
     }
       setMessages(prev => [...prev, msg])    
+      setCurrentUsers(users)    
+      
+   })
+ },[socket])
+
+ useEffect( ()=> {
+   //@ts-ignore
+   socket?.on('user-disconnect', ({disconnectedUser, users}) => { 
+    const msg: MessageType = {
+      message: `🔔 ${disconnectedUser[0].nickname} left chat...`,
+      sender: 'Server',
+      time: '',
+      type: 'notification'
+    }
+      setMessages(prev => [...prev, msg]) 
+      setCurrentUsers(users)               
+   })
+ },[socket])
+
+ useEffect( ()=> {
+   //@ts-ignore
+   socket?.on('user-close', ({disconnectedUser, users}) => { 
+    const msg: MessageType = {
+      message: `🔔 ${disconnectedUser[0].nickname} left chat...`,
+      sender: 'Server',
+      time: '',
+      type: 'notification'
+    }
+      setMessages(prev => [...prev, msg]) 
+      setCurrentUsers(users)               
    })
  },[socket])
 
     
   return (
     <>
-
+<PopOver currentUsers={currentUsers}/>
       <Card className='window-chat'>
+        
         {messages.length > 0 && <ListMessages messages={messages} currentUser={nickname}/>}
       </Card>
       <Card className='footer-chat'>

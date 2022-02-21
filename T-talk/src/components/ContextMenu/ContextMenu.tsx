@@ -6,12 +6,15 @@ import { userLogout_action } from '../../store/actions/auth-actions';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Dispatch } from 'redux';
+import { Socket } from 'socket.io-client';
+
 //props
 interface Props {
-   children: React.ReactElement
+   children: React.ReactElement,
+   socket: Socket
 }
 
-const ContextMenu:React.FC<Props> = ({children}) => {
+const ContextMenu:React.FC<Props> = ({children, socket}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const dispatch = useDispatch<Dispatch>();
@@ -25,7 +28,10 @@ const ContextMenu:React.FC<Props> = ({children}) => {
   const handleClose = () => {
    setAnchorEl(null);
  };
-
+ const closeSocket = () => {
+  socket?.emit('close');  
+ }
+ 
   return (
     <div>   
       <Button
@@ -46,8 +52,12 @@ const ContextMenu:React.FC<Props> = ({children}) => {
           'aria-labelledby': 'basic-button',
         }}     
         >
-        <MenuItem onClick={() => navigate(`/room`)}>Close Room</MenuItem>
         <MenuItem onClick={() => {
+          closeSocket()
+          navigate(`/room`)
+        }}>Close Room</MenuItem>
+        <MenuItem onClick={() => {
+          closeSocket()
           userLogout_action(dispatch)
           navigate(`/`)
           }}>Logout</MenuItem>

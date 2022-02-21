@@ -1,5 +1,4 @@
 import { AxiosResponse } from "axios";
-import { Params } from "react-router-dom";
 import API from "../api/api";
 import { API_URL } from "../store/constants";
 import { RoomResponseType } from "../store/types";
@@ -24,7 +23,7 @@ export const deleteRoom = async(id: string) => {
 //Find room in store by Params
 export const roomIsInStore = (myRooms: Array<RoomResponseType>, id: string | undefined) => {
    //if store iclude room
-   return myRooms.length && myRooms.find(el => el.room_id == id)
+   return myRooms.length && myRooms.find(el => el.room_id === id)
  }
 
 //GET ROOM BY ROOM ID

@@ -22,7 +22,7 @@ const RoomModalWindow:FC<Props> = ({action}) => {
    const handleCreateRoom = async () => {
       await createRoom_action(room, nickname)
          .then(async (res) => {       
-            if(res == undefined){
+            if(res === undefined){
                dispatch(sendAlert({status: 'error', message: 'Room already exists'}))
             } else {
                //@ts-ignore
@@ -40,7 +40,7 @@ const RoomModalWindow:FC<Props> = ({action}) => {
    }
 //Join room handling
    const handleJoinRoom = async() => {
-      const roomCheck =  myRooms.find(el => el.room_id == room)
+      const roomCheck =  myRooms.find(el => el.room_id === room)
       if(roomCheck){
          dispatch(sendAlert({status: 'error', message: `Its your room <${roomCheck.name}>. You should connect from the list below`}))
       }else {
@@ -62,7 +62,7 @@ const RoomModalWindow:FC<Props> = ({action}) => {
             <h4>{action} Room</h4>
             <TextField
                id='standard-basic'
-               label= { (action == 'Join') ? 'Room ID' : 'Room name'}
+               label= { (action === 'Join') ? 'Room ID' : 'Room name'}
                variant='outlined'
                type='text'
                placeholder='Room...'

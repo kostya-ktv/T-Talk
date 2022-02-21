@@ -11,7 +11,7 @@ export const fetchCredentials = (myRooms: Array<RoomResponseType>, credentialsPa
       roomIsInStore(myRooms, credentialsParam.id) ||
       myRooms[myRooms.length - 1];
     
-      const { room_id: id, nickname: nickname, name: room } = credentialsStore;
+      const { room_id: id, nickname, name: room } = credentialsStore;
     return { id, nickname, room };
   };
   //MERGING

@@ -41,10 +41,12 @@ body {
   flex-direction: column;
   justify-content: space-between;
   flex-wrap: wrap;
+  transition: 1s linear 0.5s;
 }
 .auth-menu {
   flex: 1;
   padding: 10px 30px 10px 30px;
+  transition: 1s linear 0.5s;
 }
 .logout {
   margin-top: 20px !important;

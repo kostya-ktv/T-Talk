@@ -6,25 +6,31 @@ type Props = {
 }
 
 const Message:React.FC<Props> = ({message, nickname}) => {
+   let messageStyle = '';
+   if(message.type === 'user-message' && message.sender !== nickname) {
+      messageStyle = 'main-user'
+   } else if(message.type === 'notification') {
+      messageStyle = 'main-notification'
+   } else {
+      messageStyle = 'main'
+   }
 
    return(
-      <div className={
-         (message.type == "user-message" && message.sender !== nickname)
-         ? 
-         "main-user" 
-         : 
-         "main"}>
+      <div className={messageStyle}>
+         { messageStyle !== 'main-notification' && 
+         
          <div className="header">
             { message.sender !== nickname && 
-               <p className="user-name">
-               {message.sender}
-               </p>
-            }
+                  <p className="user-name">
+                  ✉️{message.sender}:
+                  </p>
+               }
             <p className="time">
-               {message.time}
+               {message.time}🕖
             </p>
-            
+         
          </div>
+         }
          <div className="message">
             {message.message}
          </div>

@@ -45,7 +45,7 @@ const ChatPage: React.FC = () => {
           </Avatar>
         }
         action={
-            <ContextMenu>
+            <ContextMenu socket={socket}>
               <MoreVertIcon />
             </ContextMenu>
         }
