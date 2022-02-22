@@ -29,18 +29,18 @@ const LoginForm: FC<Props> = ({ action }) => {
         if (data === undefined) throw Error('');
         dispatch({ type: LOGIN_ACTION, payload: data?.data.user });
         dispatch(sendAlert({ status: 'success', message: 'Successful login' }));
-        navigate(`/`);
+        navigate(`/`)
       })
       .catch(() =>
         dispatch(sendAlert({ status: 'error', message: 'Invalid Credetials' }))
-      );
-  };
+      )
+  }
 
   //REGISTER
   const registerUser = async () => {
     await registation_action(email, password)
       .then((data) => {
-        if (data === undefined) throw Error('');
+        if (data === undefined) throw Error('')
         dispatch({ type: REGISTRATION_ACTION, payload: data?.data.user });
         dispatch(
           sendAlert({
@@ -53,8 +53,8 @@ const LoginForm: FC<Props> = ({ action }) => {
         dispatch(
           sendAlert({ status: 'error', message: 'Email already exists' })
         )
-      );
-  };
+      )
+  }
 
   return (
     <div className='box'>

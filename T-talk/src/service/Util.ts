@@ -21,6 +21,7 @@ export const fetchCredentials = (myRooms: Array<RoomResponseType>, credentialsPa
   return credentialsParam;
 };
 
+//SET UP REMEMBER ME OPTION FROM LOGIN WINDOW
 export let STORAGE: Storage = sessionStorage;
 export const setStorage = (remember: boolean) => {
    STORAGE = !remember ? localStorage : sessionStorage;

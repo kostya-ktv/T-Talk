@@ -7,6 +7,7 @@ import RoomPopupWindow from '../../components/RoomWindow/RoomModalWindow';
 import { sendAlert } from '../../store/actions/alerts-actions';
 import { userLogout_action } from '../../store/actions/auth-actions';
 import { getRooms_action } from '../../store/actions/room-actions';
+import { GlobalStateType } from '../../store/types';
 import './room.scss';
 
 const RoomPage: FC = () => {
@@ -14,16 +15,16 @@ const RoomPage: FC = () => {
   const dispatch = useDispatch();
   //SELECT USER
   const user = useSelector(
-    (state: any) => state.auth.user
+    (state: GlobalStateType) => state.auth.user
   );
   //SELECT myROOMS
-  const myRooms = useSelector((state:any) => state.room)
+  const myRooms = useSelector((state:GlobalStateType) => state.room)
 
   
   useEffect( () => {
 
      //REMINDER FOR USERS WHISH EMAIL NOT ACTIVATED
-    !user.isactivated &&
+    !user.isActivated &&
       setTimeout(() => {
         dispatch(
           sendAlert({
@@ -38,7 +39,7 @@ const RoomPage: FC = () => {
   return (
     <>
       <Card className='auth-box'>
-         {user.isactivated && 
+         {user.isActivated && 
             <div className='auth-menu'>
                <Popup
                   data={<RoomPopupWindow action='Create' />}

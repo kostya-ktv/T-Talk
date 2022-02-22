@@ -17,6 +17,6 @@ export const REMOVE_ALERT_ACTION = 'REMOVE_ALERT_ACTION';
 
 
 //API
-export const API_URL = `http://localhost:7000/api`
-export const API_CHAT = `http://localhost:7000/`
+export const API_URL = `http://192.168.1.21:7000/api`
+export const API_CHAT = `http://192.168.1.21:7000/`
 

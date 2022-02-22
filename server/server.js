@@ -20,13 +20,16 @@ app.use(cookieParser());
 //CORS PASS TO SOCKET 
 const io = socketio(server, {
    cors: {
-    origin: process.env.CLIENT_URL,
+    // origin: process.env.CLIENT_URL,
+    origin: true
    },
  });
+
 app.use(
   cors({
     credentials: true,
-    origin: process.env.CLIENT_URL
+    origin: true
+    // origin: process.env.CLIENT_URL
   })
 );
 
@@ -38,7 +41,7 @@ io.on('connect', (socket) => {
    //LISTENERS
    //JOIN
   socket.on('join', ({id, nickname, room, time}) => {
-    console.log('connected');
+
     Rooms.push({
       roomid: id,
       room: room,
@@ -53,7 +56,6 @@ io.on('connect', (socket) => {
       } 
     })
 
-    console.log(users);
     socket.to(id).emit('user-join', ({id, nickname, room, time, users}))
   });
  //USER SEND MESSAGE TO CHAT
