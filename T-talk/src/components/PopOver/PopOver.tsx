@@ -21,7 +21,7 @@ const PopOver:React.FC<Props> = ({currentUsers}) => {
   const id = open ? 'simple-popover' : undefined;
 
   return (
-    <div>
+    <div style={{backgroundColor: '#EFFFE2'}}>
       <Button className='btn-online' aria-describedby={id} variant="contained" onClick={handleClick}>
         online: {currentUsers.length}
       </Button>
@@ -35,7 +35,9 @@ const PopOver:React.FC<Props> = ({currentUsers}) => {
           horizontal: 'left',
         }}
       >
-        <span className='modal-online'>{currentUsers.map((el, i) => {return(<p key={i}>🔹{el}</p>)})}</span>
+        <span className='modal-online'>{currentUsers.map((el, i) => {
+          return(<p style={{width: "auto", paddingRight: '1vw'}} key={i}>🔹{el}</p>)
+        })}</span>
       </Popover>
     </div>
   );

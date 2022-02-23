@@ -15,21 +15,20 @@ const RoomPage: FC = () => {
   const dispatch = useDispatch();
   //SELECT USER
   const user = useSelector(
-    (state: GlobalStateType) => state.auth.user
+    (state: any) => state.auth.user
   );
   //SELECT myROOMS
   const myRooms = useSelector((state:GlobalStateType) => state.room)
-
   
   useEffect( () => {
 
      //REMINDER FOR USERS WHISH EMAIL NOT ACTIVATED
-    !user.isActivated &&
+    !user.isactivated &&
       setTimeout(() => {
         dispatch(
           sendAlert({
             status: 'info',
-            message: 'To create rooms, your mail must be verified',
+            message: 'To create rooms, your email must be verified',
           })
         );
       }, 1000)
@@ -39,7 +38,7 @@ const RoomPage: FC = () => {
   return (
     <>
       <Card className='auth-box'>
-         {user.isActivated && 
+         {user.isactivated && 
             <div className='auth-menu'>
                <Popup
                   data={<RoomPopupWindow action='Create' />}

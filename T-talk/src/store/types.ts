@@ -59,7 +59,7 @@ export type IUser = {
    id: number;
    email: string;  
    password: string;
-   isActivated: boolean;
+   isactivated: boolean;
    activationlink: string;
 }
 

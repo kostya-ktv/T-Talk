@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
 
    try {
       const authorizationHeader = req.headers.authorization;
-      console.log(authorizationHeader.toString());
+      
       if(!authorizationHeader) throw ApiError.UnauthorizedError();
 
       const accessToken = authorizationHeader.split(' ')[1];
