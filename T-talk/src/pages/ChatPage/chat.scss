@@ -2,7 +2,7 @@
   height: 90vh;
   width: 70vw;
   max-width: 800px;
-  min-width: 380px;
+  min-width: 280px;
   display: flex;
   flex-direction: column;
 }
@@ -29,15 +29,23 @@
 }
 .send-btn-chat {
   background-color: rgb(220, 232, 255) !important;
-  height: auto;
   border: 1px solid rgb(199, 198, 198) !important;
 }
 .send-btn-chat:hover {
   background-color: rgb(201, 203, 224) !important;
+}
+.emo-icon {
+  background-color: rgb(252, 250, 196) !important;
 }
 .header-chat {
   height: min-content;
 
   background-color: rgb(211, 231, 212);
   padding: 1vw 1vw 0.5vw 1vw !important;
+}
+@media only screen and (max-width: 660px) {
+  .box-chat {
+    height: 100vh;
+    width: 100vw;
+  }
 }

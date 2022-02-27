@@ -4,7 +4,7 @@ import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Dispatch } from 'redux';
-import { setStorage } from '../../service/Util';
+import { emailValidator, passwordValidator, setStorage } from '../../service/Util';
 import { sendAlert } from '../../store/actions/alerts-actions';
 import {
   login_action,
@@ -20,6 +20,8 @@ const LoginForm: FC<Props> = ({ action }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [isEmailValid, setEmailValid] = useState<boolean>(false);
+  const [isPasswordValid, setPasswordValid] = useState<boolean>(false);
   const dispatch = useDispatch<Dispatch>();
 
   //LOGIN
@@ -38,6 +40,14 @@ const LoginForm: FC<Props> = ({ action }) => {
 
   //REGISTER
   const registerUser = async () => {
+    passwordValidator(password, setPasswordValid)
+    emailValidator(email, setEmailValid)
+    if(!isPasswordValid || !isEmailValid) {
+      dispatch(
+        sendAlert({ status: 'error', message: 'Invalid Credentials' })
+      )
+      return
+    }
     await registation_action(email, password)
       .then((data) => {
         if (data === undefined) throw Error('')
@@ -51,7 +61,7 @@ const LoginForm: FC<Props> = ({ action }) => {
       })
       .catch(() =>
         dispatch(
-          sendAlert({ status: 'error', message: 'Email already exists' })
+          sendAlert({ status: 'error', message: 'Invalid Credentials' })
         )
       )
   }
@@ -60,23 +70,33 @@ const LoginForm: FC<Props> = ({ action }) => {
     <div className='box'>
       <h4>{action}</h4>
       <TextField
+        autoFocus
         id='standard-basic'
         label='Email'
         variant='outlined'
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => {
+          emailValidator(email, setEmailValid)
+          setEmail(e.target.value)        
+        }}
         value={email}
         type='text'
         placeholder='Email'
         className='inputs'
+        autoComplete={'off'}
+        
       />
       <TextField
         label='Password'
         variant='outlined'
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) => {
+          setPassword(e.target.value)
+          passwordValidator(password, setPasswordValid)
+        }}
         value={password}
         type='password'
         placeholder='Password'
         className='inputs'
+        helperText={action !== 'Login' && "Passwords must be: 8 characters long, at least 1 number and 1 capital letter"}
       />
 
       {action === 'Login' ? (
@@ -95,7 +115,8 @@ const LoginForm: FC<Props> = ({ action }) => {
       ) : (
         <Button 
           variant='contained' 
-          onClick={registerUser} 
+          onClick={registerUser}
+          disabled={isEmailValid && isPasswordValid ? false : true}
           className='register'>
             Registration
         </Button>

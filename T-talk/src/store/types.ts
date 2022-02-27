@@ -5,7 +5,8 @@ import { combineReducers } from "redux"
 export type GlobalStateType = {
    auth: AuthStateType,
    alerts: AlertStateType,
-   room: Array<RoomResponseType>
+   room: Array<RoomResponseType>,
+   recentRooms: Array<RecentRoomType>
 }
 export type AuthStateType = {
    user: IUser
@@ -51,7 +52,14 @@ export type RoomResponseType = {
    name: string, 
    room_id: string,
    iuser_id: number,
-   nickname: string
+   nickname: string,
+}
+export type RecentRoomType = {
+   id: number,
+   nickname: string,
+   userid: number,
+   roomid: string,
+   name: string
 }
 
 //OTHER 

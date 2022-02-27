@@ -27,3 +27,20 @@ export const setStorage = (remember: boolean) => {
    STORAGE = !remember ? localStorage : sessionStorage;
 }
 
+export const showTypingSpan = (setIsTyping: (val: boolean) => void) => {
+  setIsTyping(true)
+  setTimeout(() => setIsTyping(false), 5000)
+}
+//EMAIL VALIDATOR
+export const emailValidator = (email: string, setEmailValid: (val: boolean) => void) => {
+  const pattern = /\S+@\S+\.\S+/;
+ const isValid = pattern.test(email);
+  !isValid ? setEmailValid(false) : setEmailValid(true) 
+}
+
+//PASSWORD VALIDATOR
+export const passwordValidator = (password: string, setPasswordValid: (val: boolean) => void) => {
+  const pattern = /^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])[\w!@#$%^&*]{8,}$/
+  const isValid = pattern.test(password)
+  !isValid ? setPasswordValid(false) : setPasswordValid(true) 
+}

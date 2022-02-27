@@ -7,7 +7,7 @@ import { checkAuth_action } from '../store/actions/auth-actions';
 import { CHECK_AUTH_ACTION } from '../store/constants';
 import { removeAlert } from '../store/actions/alerts-actions';
 import ChatPage from '../pages/ChatPage/ChatPage';
-import { getRooms_action } from '../store/actions/room-actions';
+import { getRecentRooms_action, getRooms_action } from '../store/actions/room-actions';
 import Toast, { showToast } from '../components/Toast/Toast';
 import { GlobalStateType } from '../store/types';
 
@@ -22,6 +22,7 @@ const RouterApp: React.FC = () => {
 
       if (data !== undefined){
         await getRooms_action(data.data.user.id,dispatch)
+        await getRecentRooms_action(data.data.user.id, dispatch)
           dispatch({
             type: CHECK_AUTH_ACTION,
             payload: data?.data.user,

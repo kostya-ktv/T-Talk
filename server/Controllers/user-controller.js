@@ -1,4 +1,4 @@
-const {userRegistration, userLinkActivation, userLogin, userLogout, userRefreshToken} = require('../Service/user-service')
+const {userRegistration, userLinkActivation, userLogin, userLogout, userRefreshToken, emailValidator, passwordValidator} = require('../Service/user-service')
 const {validationResult} = require('express-validator');
 const ApiError = require('../Middleware/Exceptions/Api-error');
 
@@ -11,6 +11,8 @@ const registration = async (req, res, next) => {
          if(!errors.isEmpty()) return next(ApiError.BadRequest('Validation error', errors.array()));
          
          const { email, password } = req.body;
+
+         if(!emailValidator(email) || !passwordValidator(password)) return next(ApiError.BadRequest('Validation error', errors.array()));
          const user = await userRegistration(email, password);
          
          res.cookie('refreshToken', user.refreshToken, {

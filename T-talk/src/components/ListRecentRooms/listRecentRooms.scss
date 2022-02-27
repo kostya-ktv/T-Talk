@@ -1,14 +1,12 @@
-.list-rooms {
+.list-recent-rooms {
   display: flex;
   flex-direction: column;
   padding: 5px;
   margin: 10px;
   border-radius: 5px;
-  width: auto;
-  min-width: 260px !important;
 }
-.list-rooms p {
-  background-color: rgb(247, 221, 243);
+.list-recent-rooms p {
+  background-color: rgb(241, 215, 141);
   border: 1px solid rgb(201, 199, 199);
   border-radius: 5px;
   font-size: 0.8rem;
@@ -17,20 +15,20 @@
   display: flex;
   justify-content: space-between;
 }
-.list-rooms p:hover {
+.list-recent-rooms p:hover {
   background-color: rgb(232, 240, 247);
   font-weight: bold;
   cursor: pointer;
 }
-.list-rooms span {
+.list-recent-rooms span {
   border: 1px solid rgb(194, 193, 193);
   padding: 2px 5px 2px 5px;
   border-radius: 5px;
   background-color: rgb(222, 236, 224);
 }
-.list-rooms span:hover {
+.list-recent-rooms span:hover {
   background-color: rgb(188, 221, 180);
 }
-.list-rooms span:first-child:hover {
+.list-recent-rooms span:first-child:hover {
   background-color: rgb(250, 181, 181);
 }

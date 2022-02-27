@@ -1,4 +1,5 @@
 const e = require('express');
+const { addRecentRoom } = require('./Service/room-service.js');
 
 require('dotenv').config({ path: './config.env' });
 
@@ -37,11 +38,10 @@ app.use(
 let Rooms = [];
 
 io.on('connect', (socket) => {
-
    //LISTENERS
    //JOIN
-  socket.on('join', ({id, nickname, room, time}) => {
-
+  socket.on('join', ({id, nickname, room, time, userid}) => {
+    addRecentRoom(id, userid, nickname, room)
     Rooms.push({
       roomid: id,
       room: room,
@@ -76,9 +76,11 @@ io.on('connect', (socket) => {
     socket.disconnect()
     disconnectSocketResponse(io, socket)
 	});
+  socket.on('typing', ({roomid}) => {
+    io.to(roomid).emit('typingAlert');
+	});
 
 });
-
 
 
 //API APP ROUTE
@@ -96,7 +98,6 @@ const disconnectSocketResponse = (io, socket) => {
   const disconnectedUser = Rooms.filter(el => el?.socket == socket.id)
   Rooms = Rooms.filter(el => el?.socket !== socket?.id)
   if(disconnectedUser.length){
-    console.log(disconnectedUser);
       const users = Rooms.map(el => {
         if(el?.roomid == disconnectedUser[0]?.roomid){
         return el?.nickname

@@ -1,0 +1,9 @@
+.picker-box {
+  position: fixed;
+  background-color: aqua;
+  min-width: 280px;
+  max-width: 60vw;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

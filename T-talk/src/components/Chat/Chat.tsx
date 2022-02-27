@@ -5,6 +5,9 @@ import { FC, useEffect, useState } from "react";
 import ListMessages from "../ListMessages/ListMessages";
 import { MessageType } from "../../store/types";
 import PopOver from "../PopOver/PopOver";
+import { showTypingSpan } from "../../service/Util";
+import EmojiPicker from "../EmojiPicker/EmojiPicker";
+import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
 type Props = {
    socket: Socket,
@@ -17,7 +20,10 @@ const Chat:FC<Props> = ({socket, nickname, room, roomid}) => {
    const [currentMessage, setCurrentMessage] = useState('');
    const [currentUsers, setCurrentUsers] = useState<Array<string>>([]);
    const [messages, setMessages] = useState<Array<MessageType>>([]);
+   const [isTyping, setIsTyping] = useState<boolean>(false);
+   const [emojiVisible, setEmojiVisible] = useState<boolean>(false);
 
+//SEND MSG
    const sendMessage = () => {  
       if(currentMessage) {
          const messageData = {
@@ -44,7 +50,6 @@ const Chat:FC<Props> = ({socket, nickname, room, roomid}) => {
       setCurrentUsers(users) 
    })
  },[socket])
-
 //EFFECT FOR EVENT JOINING CHAT
  useEffect( ()=> {
    socket?.on('user-join', ({id, nickname, room, time, users}) => { 
@@ -60,7 +65,7 @@ const Chat:FC<Props> = ({socket, nickname, room, roomid}) => {
       
    })
  },[socket])
-
+//DISCONNECT
  useEffect( ()=> {
    //@ts-ignore
    socket?.on('user-disconnect', ({disconnectedUser, users}) => { 
@@ -74,7 +79,7 @@ const Chat:FC<Props> = ({socket, nickname, room, roomid}) => {
       setCurrentUsers(users)               
    })
  },[socket])
-
+//LEAVE TAB
  useEffect( ()=> {
    //@ts-ignore
    socket?.on('user-close', ({disconnectedUser, users}) => { 
@@ -88,15 +93,21 @@ const Chat:FC<Props> = ({socket, nickname, room, roomid}) => {
       setCurrentUsers(users)               
    })
  },[socket])
+//TYPING
+ useEffect( ()=> {
+   //@ts-ignore
+   socket?.on('typingAlert', () => showTypingSpan(setIsTyping))
+ },[socket])
 
     
   return (
     <>
-<PopOver currentUsers={currentUsers}/>
+      <PopOver currentUsers={currentUsers} isTyping={isTyping}/>
+
       <Card className='window-chat'>
-        
         {messages.length > 0 && <ListMessages messages={messages} currentUser={nickname}/>}
       </Card>
+
       <Card className='footer-chat'>
         <TextField
           maxRows={2}
@@ -106,21 +117,27 @@ const Chat:FC<Props> = ({socket, nickname, room, roomid}) => {
           className='input-chat'
           variant='outlined'
           value={currentMessage}
-          onChange={(e) => setCurrentMessage(e.target.value)}
+          onChange={(e) => {
+            socket.emit('typing', {roomid})
+            setCurrentMessage(e.target.value)}}
           onKeyPress={(event) => { 
             if(event.key === "Enter"){
               sendMessage()
               event.preventDefault();
-            }
-          }}
-          
+            }}}
+        />
+        {emojiVisible && <EmojiPicker currentMessage={currentMessage} setCurrentMessage={setCurrentMessage}/>}
+        <Button
+          variant='text'
+          className='send-btn-chat emo-icon'
+          endIcon={<InsertEmoticonIcon />}
+          onClick={()=>setEmojiVisible(!emojiVisible)}          
         />
         <Button
           variant='text'
           className='send-btn-chat'
-          endIcon={<SendIcon />}
-          onClick={sendMessage}
-          
+          endIcon={<SendIcon/>}
+          onClick={sendMessage}          
         />
       </Card>
     </>

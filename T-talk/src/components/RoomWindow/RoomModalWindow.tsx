@@ -16,6 +16,7 @@ const RoomModalWindow:FC<Props> = ({action}) => {
    const navigate = useNavigate()   
    const dispatch = useDispatch()
    const myRooms = useSelector((state: GlobalStateType) => state.room)
+   const myRecentRooms = useSelector((state: GlobalStateType) => state.recentRooms)
    const [room, setRoom] = useState('')
    const [nickname, setNickname] = useState('')
 //Create room handling
@@ -41,9 +42,14 @@ const RoomModalWindow:FC<Props> = ({action}) => {
 //Join room handling
    const handleJoinRoom = async() => {
       const roomCheck =  myRooms.find(el => el.room_id === room)
+      const recentRoomCheck = myRecentRooms.find(el => el.roomid == room)
       if(roomCheck){
          dispatch(sendAlert({status: 'error', message: `Its your room <${roomCheck.name}>. You should connect from the list below`}))
-      }else {
+      }else if(recentRoomCheck) {
+         dispatch(sendAlert({status: 'error', message: `Its your Recent room <${recentRoomCheck.name}>. You should connect from the list below`}))
+      }
+      
+      else {
          await getRoomByRoomID_action(room)
             .then(res => {
 
@@ -69,6 +75,7 @@ const RoomModalWindow:FC<Props> = ({action}) => {
                className='inputs'
                value={room}
                onChange={(e)=> setRoom(e.target.value)}
+               autoComplete={'off'}
             />
             <TextField
                id='standard-basic'
@@ -79,6 +86,7 @@ const RoomModalWindow:FC<Props> = ({action}) => {
                className='inputs'
                value={nickname}
                onChange={(e)=> setNickname(e.target.value)}
+               autoComplete={'off'}
             />
             {action === 'Create' ?
                (<Button

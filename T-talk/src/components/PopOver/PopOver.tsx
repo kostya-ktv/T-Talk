@@ -4,9 +4,10 @@ import Button from '@mui/material/Button';
 import './popover.scss'
 type Props = {
    currentUsers: Array<string>
+   isTyping: boolean
 }
 
-const PopOver:React.FC<Props> = ({currentUsers}) => {
+const PopOver:React.FC<Props> = ({currentUsers, isTyping}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event:any) => {
@@ -25,6 +26,7 @@ const PopOver:React.FC<Props> = ({currentUsers}) => {
       <Button className='btn-online' aria-describedby={id} variant="contained" onClick={handleClick}>
         online: {currentUsers.length}
       </Button>
+      {isTyping && <span className='typing'>Somebody is typing...</span>}
       <Popover
         id={id}
         open={open}

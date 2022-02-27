@@ -1,5 +1,5 @@
 const ApiError = require('../Middleware/Exceptions/Api-error');
-const {findRoomByName_service,getRoomById_service, getRoomsByUserId_service, deleteRoomById_service} = require('../Service/room-service');
+const {findRoomByName_service,getRoomById_service, getRoomsByUserId_service, deleteRoomById_service, getRecentRoomsByUserId_service, deleteRecentRoomByIdAndUserId_service} = require('../Service/room-service');
 const { findUserByEmail } = require('../Service/user-service');
 const {addRoomToDB_service} = require('../Service/room-service');
 const uuid = require('uuid');
@@ -48,6 +48,19 @@ const deleteRoom = async (req, res, next) => {
    }
    
 }
+//DELETE RECENT ROOM
+const deleteRecentRoom = async (req, res, next) => {
+
+   try {
+      const { roomid , userid} = req.params;
+      await deleteRecentRoomByIdAndUserId_service(roomid, userid);
+      return res.json({roomid})
+   } catch (error) {
+      console.log(error);
+      next(error)
+   }
+   
+}
 //GET ROOM
 const getRoomByRoomId = async (req, res, next) => {
    try {
@@ -59,10 +72,22 @@ const getRoomByRoomId = async (req, res, next) => {
       next(error)
    }
 }
+const getRecentRooms = async(req, res, next) => {
+   try {
+      const { userid } = req.params
+      const rooms = await getRecentRoomsByUserId_service(userid)
+      return res.json({rooms})
+   } catch (error) {
+      console.log(error);
+      next(error)
+   }
+}
 
 module.exports = {
    createRoom,
    fetchRoomsByUser,
    deleteRoom,
-   getRoomByRoomId
+   getRoomByRoomId,
+   getRecentRooms,
+   deleteRecentRoom
 }

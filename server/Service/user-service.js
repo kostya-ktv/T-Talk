@@ -93,6 +93,17 @@ const userRefreshToken = async(refreshToken) => {
       user: user[0]
    }
 }
+const emailValidator = (email) => {
+   const pattern = /\S+@\S+\.\S+/;
+   return isValid = pattern.test(email);
+  }
+  
+  //PASSWORD VALIDATOR
+const passwordValidator = (password) => {
+    const pattern = /^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])[\w!@#$%^&*]{8,}$/
+    return pattern.test(password)  
+  }
+  
 
 module.exports = {
    findUserByEmail,
@@ -100,5 +111,7 @@ module.exports = {
    userLinkActivation,
    userLogin,
    userLogout,
-   userRefreshToken
+   userRefreshToken,
+   emailValidator,
+   passwordValidator
 }

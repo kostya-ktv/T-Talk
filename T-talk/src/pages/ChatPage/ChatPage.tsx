@@ -17,13 +17,15 @@ import { fetchCredentials } from '../../service/Util';
 import Chat from '../../components/Chat/Chat';
 
 const ChatPage: React.FC = () => {
-
+  const user = useSelector((state: GlobalStateType) => state.auth.user)
   const [socket, setSocket] = useState<any>();
   const myRooms = useSelector((state: GlobalStateType) => state.room);
 
   let credentialsParam:any = { ...useParams() };
+
   try {
     credentialsParam = fetchCredentials(myRooms, credentialsParam);
+
   } catch (error) {}
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const ChatPage: React.FC = () => {
    },[])
 
   useEffect(() => {
-    socket?.emit('join', {...credentialsParam, time: new Date(Date.now()).toLocaleString()});
+    socket?.emit('join', {...credentialsParam, time: new Date(Date.now()).toLocaleString(), userid: user.id});
   },[socket])
 
   return (
