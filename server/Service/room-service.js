@@ -29,6 +29,10 @@ const getRoomByUserIdAndRoomid_service = async(roomid, userid) => {
 const getRecentRoomsByUserId_service = async(userid) => {
    return await dbConnection('irecentrooms').where({userid: userid})
 }
+//FIND REECNT ROOM BY USERID AND ROOMID
+const getRecentRoomsByUserIdAndRoomId_service = async(userid, roomid) => {
+   return await dbConnection('irecentrooms').where({userid: userid, roomid: roomid})
+}
 
 
 //ADD NEW ROOM TO DB 
@@ -67,11 +71,12 @@ const openRoom_service = (id, room, user) => {
 }
 //CHECK AND ADD RECENT ROOM
 const addRecentRoom = async (roomid, userid, nickname, room) => {
-   const isHim = await getRoomByUserIdAndRoomid_service(roomid, userid)
+   const isHisRoom = await getRoomByUserIdAndRoomid_service(roomid, userid)
+   const isRecentRoomExists = await getRecentRoomsByUserIdAndRoomId_service(roomid, userid)
    try {
-      !isHim.length && await addRecentRoomToDB_service(roomid, userid, nickname, room)
+      if(!isHisRoom.length && !isRecentRoomExists.length) await addRecentRoomToDB_service(roomid, userid, nickname, room)
    } catch (error) {
-      
+      console.log(error);
    }
   
 }
@@ -86,6 +91,7 @@ module.exports = {
    addRecentRoom,
    getRoomByUserIdAndRoomid_service,
    getRecentRoomsByUserId_service,
-   deleteRecentRoomByIdAndUserId_service
+   deleteRecentRoomByIdAndUserId_service,
+   getRecentRoomsByUserIdAndRoomId_service
 }
 
