@@ -42,7 +42,7 @@ const RoomModalWindow:FC<Props> = ({action}) => {
 //Join room handling
    const handleJoinRoom = async() => {
       const roomCheck =  myRooms.find(el => el.room_id === room)
-      const recentRoomCheck = myRecentRooms.find(el => el.roomid == room)
+      const recentRoomCheck = myRecentRooms.find(el => el.roomid === room)
       if(roomCheck){
          dispatch(sendAlert({status: 'error', message: `Its your room <${roomCheck.name}>. You should connect from the list below`}))
       }else if(recentRoomCheck) {

@@ -33,8 +33,6 @@ const getRecentRoomsByUserId_service = async(userid) => {
 const getRecentRoomsByUserIdAndRoomId_service = async(userid, roomid) => {
    return await dbConnection('irecentrooms').where({userid: userid, roomid: roomid})
 }
-
-
 //ADD NEW ROOM TO DB 
 const addRoomToDB_service = async(room, uuid, user_id, nickname) => {
 

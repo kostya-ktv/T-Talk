@@ -30,7 +30,7 @@ const Chat:FC<Props> = ({socket, nickname, room, roomid}) => {
             roomid: roomid,
             message: currentMessage,
             nickname: nickname,
-            time: new Date(Date.now()).toLocaleTimeString()
+            time: new Date(Date.now()).toLocaleTimeString('en-US', {hour12: false})
          }
           socket?.emit('sendMessage', messageData);  
           setCurrentMessage('')   

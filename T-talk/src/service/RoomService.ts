@@ -29,7 +29,6 @@ export const roomIsInStore = (myRooms: Array<RoomResponseType>, id: string | und
    //if store iclude room
    return myRooms.length && myRooms.find(el => el.room_id === id)
  }
-
 //GET ROOM BY ROOM ID
 export const getRoomByRoomId = async(roomid: string) => {
    return await API.get<Array<RoomResponseType>>(`${API_URL}/get-room/${roomid}`, {withCredentials: true})
